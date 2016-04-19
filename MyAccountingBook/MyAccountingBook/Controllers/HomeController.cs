@@ -13,6 +13,12 @@ namespace MyAccountingBook.Controllers
             return View();
         }
 
+        [ChildActionOnly]
+        public ActionResult AccountingList()
+        {
+            return View();
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
