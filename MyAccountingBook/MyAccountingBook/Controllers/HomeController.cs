@@ -16,7 +16,12 @@ namespace MyAccountingBook.Controllers
         [ChildActionOnly]
         public ActionResult AccountingList()
         {
-            return View();
+            var items = new List<ViewModels.Home.AccountingViewModel>() {
+                new ViewModels.Home.AccountingViewModel() { Category="支出", Date=DateTime.Parse("2016-01-01"), Money=300, Description="天龍便當" },
+                new ViewModels.Home.AccountingViewModel() { Category="收入", Date=DateTime.Parse("2016-01-01"), Money=300, Description="天龍便當1" },
+                new ViewModels.Home.AccountingViewModel() { Category="支出", Date=DateTime.Parse("2016-01-01"), Money=300, Description="天龍便當2" }
+            };
+            return View(items);
         }
 
         public ActionResult About()
