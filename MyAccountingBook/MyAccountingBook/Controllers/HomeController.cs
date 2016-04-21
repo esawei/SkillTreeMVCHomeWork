@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Linq.Expressions;
 
 namespace MyAccountingBook.Controllers
 {
     public class HomeController : Controller
     {
+        Models.SkillTreeHomeworkEntities db = new Models.SkillTreeHomeworkEntities();
+
         public ActionResult Index()
         {
             return View();
@@ -16,12 +19,14 @@ namespace MyAccountingBook.Controllers
         [ChildActionOnly]
         public ActionResult AccountingList()
         {
-            var items = new List<ViewModels.Home.AccountingViewModel>() {
-                new ViewModels.Home.AccountingViewModel() { Category="支出", Date=DateTime.Parse("2016-01-01"), Money=300, Description="天龍便當" },
-                new ViewModels.Home.AccountingViewModel() { Category="收入", Date=DateTime.Parse("2016-01-01"), Money=300, Description="天龍便當1" },
-                new ViewModels.Home.AccountingViewModel() { Category="支出", Date=DateTime.Parse("2016-01-01"), Money=300, Description="天龍便當2" }
-            };
-            return View(items);
+            var list = db.AccountBook.Select(x=>new ViewModels.Home.AccountingViewModel {
+                Category = (ViewModels.Home.AcctountingCategory)x.Category,
+                Date = x.Date,
+                Money = x.Amount,
+                Description = x.Remark
+            }).OrderByDescending(x=>x.Date)
+            .Take(20);
+            return View(list);
         }
 
         public ActionResult About()
