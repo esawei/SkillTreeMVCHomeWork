@@ -16,10 +16,32 @@ namespace MyAccountingBook.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Index(ViewModels.Home.AccountingViewModel pageData)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(pageData);
+            }
+
+            var item = new Models.AccountBook() {
+                Id = Guid.NewGuid(),
+                Category = (int)pageData.Category,
+                Date = pageData.Date,
+                Amount = pageData.Money,
+                Remark = pageData.Description
+            };
+
+            this.db.AccountBook.Add(item);
+            this.db.SaveChanges();
+
+            return View();
+        }
+
         [ChildActionOnly]
         public ActionResult AccountingList()
         {
-            var list = db.AccountBook.Select(x=>new ViewModels.Home.AccountingViewModel {
+            var list = this.db.AccountBook.Select(x=>new ViewModels.Home.AccountingViewModel {
                 Category = (ViewModels.Home.AcctountingCategory)x.Category,
                 Date = x.Date,
                 Money = x.Amount,
